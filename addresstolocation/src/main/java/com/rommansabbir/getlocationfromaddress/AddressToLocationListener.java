@@ -4,6 +4,7 @@ import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.os.Build;
 import android.util.Log;
 import java.io.IOException;
 import java.util.List;
@@ -56,12 +57,15 @@ public class AddressToLocationListener {
          * If not null, then extract the location from the address list
          * Notify the interface on location get success
          */
-        if(addresses != null){
+        if(addresses != null && addresses.size()!=0){
             Log.d(TAG, "getLocationFromAddress: ");
             Location location = new Location(addresses.get(0).getLocality());
             location.setLatitude(addresses.get(0).getLatitude());
             location.setLongitude(addresses.get(0).getLongitude());
             listenerInterface.onAddressToLocationSuccess(location);
+        }
+        else {
+            listenerInterface.onAddressToLocationFailure("Nothing found. Please type a valid address");
         }
     }
 
@@ -138,6 +142,7 @@ public class AddressToLocationListener {
             listenerInterface.onAddressFromLocationSuccess(addresses);
         }
     }
+
 
     /**
      * Destroy the callback after usages
